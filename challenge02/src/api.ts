@@ -24,11 +24,18 @@ app.get("/accounts/:accountId", async function (req, res) {
 });
 
 app.post("/request-ride", async function (req, res) {
-	const accountDAO = new AccountDAODatabase();
-	const rideDAO = new RideDAODatabase();
-	const requestRide = new RequestRide(accountDAO,rideDAO)
-	const response = await requestRide.execute(req.body)
-	res.json(response);
+	try{
+		const accountDAO = new AccountDAODatabase();
+		const rideDAO = new RideDAODatabase();
+		const requestRide = new RequestRide(accountDAO,rideDAO)
+		const response = await requestRide.execute(req.body)
+		return res.json(response);
+	}catch(e:any){
+		return res.status(422).json({
+			message:  e.message
+		})
+	}
+	
 });
 
 app.get("/rides/:rideId", async function (req, res) {

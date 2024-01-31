@@ -12,7 +12,7 @@ export default class RequestRide{
     const passenger = await this.accountDAO.getById(input.passengerId)
     if(!passenger)throw new Error('User Not found')
     if(!passenger.is_passenger)throw new Error('User is not a passenger')
-    const [activeRide] = await this.rideDAO.getActiveRidesByPassengerId(passenger.account_id)
+    const [activeRide] = await this.rideDAO.getActiveRidesByPassengerId(input.passengerId)
     if(activeRide) throw new Error('Passenger has an active ride')
     input.rideId = crypto.randomUUID()
     input.status = "requested"

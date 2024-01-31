@@ -25,6 +25,7 @@ export class RideDAODatabase implements RideDAO {
   async getActiveRidesByPassengerId(passengerId: string): Promise<any> {
     const connection = pgp()("postgres://postgres:123456@localhost:5432/app");
 		const activeRidesData = await connection.query("select * from cccat15.ride where passenger_id = $1 and status = 'requested'", [passengerId]);
+    console.log('DWABNODAW',passengerId)
     const activeRides: any[] = [];
 		for (const activeRideData of activeRidesData) {
 			activeRides.push(activeRideData);
