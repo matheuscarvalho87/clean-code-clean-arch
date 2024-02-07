@@ -7,11 +7,13 @@ import { MailerGatewayConsole } from "../gateway/MailerGateway";
 import RequestRide from "../../application/usecase/RequestRide";
 import { RideRepositoryDatabase } from "../repository/RideRepository";
 import Signup from "../../application/usecase/Signup";
+import AcceptRide from '../../application/usecase/AcceptRide';
+import StartRide from '../../application/usecase/StartRide';
 
 // Interface Adapter (verde)
 export default class MainController {
 
-	constructor (httpServer: HttpServer, signup: Signup, getAccount: GetAccount, requestRide: RequestRide, getRide: GetRide) {
+	constructor (httpServer: HttpServer, signup: Signup, getAccount: GetAccount, requestRide: RequestRide, getRide: GetRide,acceptRide:AcceptRide, startRide:StartRide) {
 		console.log('Controllers ready')
 		httpServer.register("post", "/signup", async function (params: any, body: any) {
 			const output = await signup.execute(body);
@@ -31,6 +33,14 @@ export default class MainController {
 		httpServer.register("get", "/rides/:rideId", async function (params: any, body: any) {
 			const ride = await getRide.execute(params.rideId);
 			return ride;
+		});
+
+		httpServer.register("patch", "/rides/accept", async function (params: any, body: any) {
+		  await acceptRide.execute(body);
+		});
+
+		httpServer.register("patch", "/rides/start", async function (params: any, body: any) {
+		  await startRide.execute(body);
 		});
 	}
 }
