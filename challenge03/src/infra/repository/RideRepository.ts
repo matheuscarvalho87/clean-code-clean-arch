@@ -17,16 +17,11 @@ export class RideRepositoryDatabase implements RideRepository {
 	}
 
 	async save (ride: Ride) {
-		await this.connection.query("insert into cccat15.ride (ride_id, passenger_id, from_lat, from_long, to_lat, to_long, status, date,driver_id) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [ride.rideId, ride.passengerId, ride.fromLat, ride.fromLong, ride.toLat, ride.toLong, ride.status, ride.date, ride.driverId]);
+		await this.connection.query("insert into cccat15.ride (ride_id, passenger_id, from_lat, from_long, to_lat, to_long, status, date,driver_id) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [ride.rideId, ride.passengerId, ride.fromLat, ride.fromLong, ride.toLat, ride.toLong, ride.getStatus(), ride.date, ride.getDriverId()]);
 	}
 
 	async update(ride: Ride): Promise<void> {
-		// try {
-			await this.connection.query("update cccat15.ride set status = $1, driver_id = $2 where ride_id = $3", [ride.status, ride.driverId, ride.passengerId]);
-		// console.log('UPDATED',ride.status, ride.driverId, ride.passengerId)
-		// } catch (error) {
-			// throw new Error(`Error on update ${error}`)
-		// }
+		await this.connection.query("update cccat15.ride set status = $1, driver_id = $2 where ride_id = $3", [ride.getStatus(), ride.getDriverId(), ride.rideId]);
 	}
 
 	async get (rideId: string) {

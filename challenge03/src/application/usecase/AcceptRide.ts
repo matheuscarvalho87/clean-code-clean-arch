@@ -13,13 +13,14 @@ export default class AcceptRide{
 
     const ride = await this.rideRepository.get(rideId)
     if (!ride)  throw new Error('Ride does not exist')
-    if(ride && ride.status !== "requested") throw new Error('Invalid status for acceptance');
+    
+    // const [driverInAnotherRide] = await this.rideRepository.getAcceptedOrInProgressRidesByDriverId(driverId)
+    // console.log('DRIVERINANOTHERRIDE',driverInAnotherRide)
+    // if(driverInAnotherRide)  throw new Error('Driver already in another trip')
 
-    const [driverInAnotherRide] = await this.rideRepository.getAcceptedOrInProgressRidesByDriverId(driverId)
-    if(driverInAnotherRide)  throw new Error('You are already in another trip')
-    const newRide = Ride.acceptRide(ride, driverId)
-    console.log({newRide})
-    await this.rideRepository.update(newRide)
+    ride.accept(driverId)
+    console.log({ride})
+    await this.rideRepository.update(ride)
   } 
 }
 

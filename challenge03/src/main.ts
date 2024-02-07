@@ -21,6 +21,6 @@ const getAccount = new GetAccount(accountRepository);
 const requestRide = new RequestRide(rideRepository, accountRepository);
 const getRide = new GetRide(rideRepository, accountRepository);
 const acceptRide = new AcceptRide(rideRepository, accountRepository);
-const startRide = new StartRide(rideRepository, accountRepository);
+const startRide = new StartRide(rideRepository);
 new MainController(httpServer, signup, getAccount, requestRide, getRide,acceptRide,startRide);
 httpServer.listen(3000);

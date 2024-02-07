@@ -6,6 +6,7 @@ export default interface RideRepository {
 	save (ride: Ride): Promise<void>;
 	get (rideId: string): Promise<Ride | undefined>;
 	getActiveRidesByPassengerId (passengerId: string): Promise<Ride[]>;
+	update(ride: Ride): Promise<void>
 }
 
 // Adapter Database
@@ -31,5 +32,9 @@ export class RideRepositoryDatabase implements RideRepository {
 			activeRides.push(Ride.restore(activeRideData.ride_id, activeRideData.passenger_id, parseFloat(activeRideData.from_lat), parseFloat(activeRideData.from_long), parseFloat(activeRideData.to_lat), parseFloat(activeRideData.to_long), activeRideData.status, activeRideData.date));
 		}
 		return activeRides;
+	}
+
+	async update (ride: Ride) {
+		await this.connection.query("update cccat15.ride  set status = $1, driver_id = $2 where ride_id = $3", [ride.getStatus(), ride.getDriverId(), ride.rideId]);
 	}
 }
