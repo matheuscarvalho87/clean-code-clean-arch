@@ -1,0 +1,44 @@
+version: "3.7"
+
+services:
+  database:
+    image: bitnami/postgresql:13
+    container_name: ccca15-postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: postgres
+      POSTGRESQL_DATABASE: cccat15
+    volumes:
+      - ccca15-volume:/data/postgres
+    networks:
+      - ccca15-network
+  rabbit1:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit1"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: "rabbitmq1"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - rabbitmq_go_net
+
+volumes:
+  ccca15-volume:
+    driver: local
+
+networks:
+  ccca15-network:
+    driver: bridge
+  rabbitmq_go_net:
+    driver: bridge

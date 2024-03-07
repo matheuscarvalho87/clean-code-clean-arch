@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  database:
+    image: bitnami/postgresql:13
+    container_name: ccca15-postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: postgres
+      POSTGRESQL_DATABASE: cccat15
+    volumes:
+      - ccca15-volume:/data/postgres
+    networks:
+      - ccca15-network
+
+
+volumes:
+  ccca15-volume:
+    driver: local
+
+networks:
+  ccca15-network:
+    driver: bridge
